@@ -14,6 +14,7 @@
 ## Load modules
 module load bioinfo-tools
 module load vcftools # vcftools/0.1.16
+module load biopython # in order to use pandas
 
 cd $BASE_PATH
 
@@ -26,6 +27,10 @@ for file in Results/02_Pi/100kb/*.pi; do cat $file | grep -E -v "chrZ|chrLGE22|s
 for file in Results/02_Pi/100kb/*.pi; do cat $file | grep -E "CHROM|chrZ" > $file.chrz; done ## Filter for chrZ
 for file in Results/02_Pi/100kb/*.pi; do cat $file | grep -E "CHROM|chr5" > $file.chr5; done ## Filter for chr5
 
+## Print results for each group
+for file in Results/02_Pi/100kb/*.autosomes; do python3 Bin/meanstdev.py $file 4; done
+for file in Results/02_Pi/100kb/*.chrz; do python3 Bin/meanstdev.py $file 4; done
+for file in Results/02_Pi/100kb/*.chr5; do python3 Bin/meanstdev.py $file 4; done
 
 #----------------------------------------------------------------------------------------
 # Intergenic and intronic regions
@@ -76,8 +81,6 @@ awk '/^>/ {if (seq) {printf("\t%d\n", seq)} \
 printf("%s",gensub(">", "", $0)); seq=0; next} \
 {seq+=length($0)} END {if(seq){printf("\t%d\n",seq)}}' \
 house_sparrow_genome_assembly-18-11-14.fa > Data/chrlengths_tmp.txt
-## Sort by length
-#cat Data/chrlengths_tmp.txt | sort -k1 > Data/chrlengths.txt
 
 ## Calculate Pi per site in regions:
 mkdir -p Results/02_Pi/Variants/{synonymous,nonsynonymous,allvariants,Intronic,Intergenic}
@@ -91,4 +94,17 @@ for file in Data/vcf_pop_names/*; do file=${file##*/}; site=${file%.txt}; vcftoo
 --vcf Data/sparrows_anna.intergenic.vcf --site-pi --out Results/02_Pi/Variants/Intergenic/$site \
 --keep Data/vcf_pop_names/$file; done
 
-## TODO: Add calculation of averages with py script
+## Calculate intronic and intergenic regions
+python3 Bin/getexonsandinter.py Data/cass.gff Data/introns.pos Data/intergenic.pos
+
+## Calculate values per population
+introns_length=$(cat Data/introns.pos | wc -l)
+intergenic_length=$(cat Data/intergenic.pos | wc -l)
+
+#Introns
+for pop in Results/02_Pi/Variants/Intronic/*.pi; do printf "$pop\t"; \
+echo $(cat $pop | awk '{sum+=$3} END {printf "%.2f", sum} ')/$introns_length | bc -l; done
+
+#Intergenic
+for pop in Results/02_Pi/Variants/Intergenic/*.pi; do printf "$pop\t"; \
+echo $(cat $pop | awk '{sum+=$3} END {printf "%.2f", sum} ')/$intergenic_length | bc -l; done

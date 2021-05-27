@@ -22,3 +22,7 @@ do sed "s/pop/$pop/g" Bin/Templates/theta.sh \
 
 ## Execute all scripts
 for file in Bin/06_Theta_scripts/*; do chmod +x $file; ./$file; done
+
+## Calculate mean and standar deviation to obtain FST (col 9)
+for file in Results/06_Theta/*.autosomes.pestPG; do python3 Bin/meanstdev.py $file 8; done
+for file in Results/06_Theta/*.chrz.pestPG; do python3 Bin/meanstdev.py $file 8; done

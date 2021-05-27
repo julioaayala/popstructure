@@ -28,3 +28,9 @@ set -- Data/vcf_pop_names/*
 for a; do shift; for b; do a=${a##*/}; b=${b##*/};a=${a%.txt}; b=${b%.txt}; \
 python3 Bin/dxy.py --pop1 Results/03_Dxy/Freq/$a.frq.count --pop2 Results/03_Dxy/Freq/$b.frq.count \
 --window 100000 > Results/03_Dxy/${a}_vs_${b}.dxy.windowed; done; done
+
+for file in Results/03_Dxy/*.windowed; do cat $file | grep -E -v "chrZ|chrLGE22|scaffold" > $file.autosomes; done ## Exclude LGE22, chrZ and scaffolds
+for file in Results/03_Dxy/*.windowed; do cat $file | grep -E "chrom|chrZ" > $file.chrz; done ## Exclude LGE22, chrZ and scaffolds
+## Calculate mean and standar deviation
+for file in Results/03_Dxy/*.autosomes; do python3 Bin/meanstdev.py $file 4; done
+for file in Results/03_Dxy/*.chrz; do python3 Bin/meanstdev.py $file 4; done

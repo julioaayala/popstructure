@@ -25,3 +25,8 @@ for pop1; do shift; for pop2; do sed "s/p1/$pop1/g" Bin/Templates/fst.sh | sed "
 
 # Execute all scripts
 for file in Bin/05_Fst_scripts/*; do chmod +x $file; ./$file; done
+
+
+## Calculate mean and standar deviation
+for file in Results/05_Fst/*.autosomes.windowed; do python3 Bin/meanstdev.py $file 4; done
+for file in Results/05_Fst/*.chrz.windowed; do python3 Bin/meanstdev.py $file 4; done
