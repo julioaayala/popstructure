@@ -8,11 +8,19 @@
 #SBATCH --mail-user=ju7141ay-s@student.lu.se
 #SBATCH --mail-type=FAIL
 
-## Population structure in ANGSD, generate SFS files for future analysis
+#----------------------------------------------------------------------------------------
+# Julio Ayala
+# Created on: May 2021
+# Population structure in ANGSD, generate SFS files for future analysis
+#----------------------------------------------------------------------------------------
 
-module load bioinfo-tools
-module load ANGSD # ANGSD/0.933
-module load samtools # samtools/1.12
+
+if [ -n "$IS_UPPMAX" ]; then
+  module load bioinfo-tools
+  module load ANGSD # ANGSD/0.933
+  module load samtools # samtools/1.12
+  module list
+else echo ""; fi
 
 cd $BASE_PATH
 

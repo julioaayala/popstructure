@@ -8,14 +8,20 @@
 #SBATCH --mail-user=ju7141ay-s@student.lu.se
 #SBATCH --mail-type=FAIL
 
+#----------------------------------------------------------------------------------------
+# Julio Ayala
+# Created on: May 2021
 # PCA
-## Calculate PCA for the italian sparrow populations from a vcf file using vcftools and plink
+# Calculate PCA for the italian sparrow populations from a vcf file using vcftools and plink
+#----------------------------------------------------------------------------------------
 
 ## Load modules
-module load bioinfo-tools
-module load plink # plink/1.90b4.9
-module load vcftools # vcftools/0.1.16
-
+if [ -n "$IS_UPPMAX" ]; then
+  module load bioinfo-tools
+  module load plink # plink/1.90b4.9
+  module load vcftools # vcftools/0.1.16
+  module list
+else echo ""; fi
 
 cd $BASE_PATH
 

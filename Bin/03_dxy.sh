@@ -8,12 +8,17 @@
 #SBATCH --mail-user=ju7141ay-s@student.lu.se
 #SBATCH --mail-type=FAIL
 
-## Calculate DXY for all population pairs using a python script and vcf frequency data
-## as an input
+#----------------------------------------------------------------------------------------
+# Julio Ayala
+# Created on: May 2021
+# Calculate DXY for all population pairs using a python script and vcf frequency data as input
+#----------------------------------------------------------------------------------------
 
 ## Load modules
-module load bioinfo-tools
-module load vcftools # vcftools/0.1.16
+if [ -n "$IS_UPPMAX" ]; then
+  module load bioinfo-tools
+  module load vcftools # vcftools/0.1.16
+else echo ""; fi
 
 cd $BASE_PATH
 

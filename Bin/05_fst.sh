@@ -8,12 +8,19 @@
 #SBATCH --mail-user=ju7141ay-s@student.lu.se
 #SBATCH --mail-type=FAIL
 
-## Calculate for all population pairs
-## Based on SFS using ANGSD
+#----------------------------------------------------------------------------------------
+# Julio Ayala
+# Created on: May 2021
+# Calculate FST for all population pairs
+# Based on SFS using ANGSD
+#----------------------------------------------------------------------------------------
 
-## Population structure in ANGSD
-module load bioinfo-tools
-module load ANGSD # ANGSD/0.933
+if [ -n "$IS_UPPMAX" ]; then
+  module load bioinfo-tools
+  module load ANGSD # ANGSD/0.933
+  module list
+else echo ""; fi
+
 
 cd $BASE_PATH
 

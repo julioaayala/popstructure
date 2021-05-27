@@ -8,11 +8,18 @@
 #SBATCH --mail-user=ju7141ay-s@student.lu.se
 #SBATCH --mail-type=FAIL
 
-## Calculate thetas (tajimas D, waterson Theta, etc) for all populations
-## Based on SFS using ANGSD
+#----------------------------------------------------------------------------------------
+# Julio Ayala
+# Created on: May 2021
+# Calculate thetas (tajimas D, waterson Theta, etc) for all populations
+# Based on SFS using ANGSD
+#----------------------------------------------------------------------------------------
 
-module load bioinfo-tools
-module load ANGSD # ANGSD/0.933
+if [ -n "$IS_UPPMAX" ]; then
+  module load bioinfo-tools
+  module load ANGSD # ANGSD/0.933
+  module list
+else echo ""; fi
 
 ## Using the template, generate for all populations
 mkdir Bin/06_Theta_scripts

@@ -8,13 +8,20 @@
 #SBATCH --mail-user=ju7141ay-s@student.lu.se
 #SBATCH --mail-type=FAIL
 
+#----------------------------------------------------------------------------------------
+# Julio Ayala
+# Created on: May 2021
 # Nucleotide diversity
-## Perform Nucleotide diversity analysis for each population with 100kb non overlappingwindows
+# Perform Nucleotide diversity analysis for each population with 100kb non overlapping windows
+#----------------------------------------------------------------------------------------
 
 ## Load modules
-module load bioinfo-tools
-module load vcftools # vcftools/0.1.16
-module load biopython # in order to use pandas
+if [ -n "$IS_UPPMAX" ]; then
+  module load bioinfo-tools
+  module load vcftools # vcftools/0.1.16
+  module load biopython # in order to use pandas
+  module list
+else echo ""; fi
 
 cd $BASE_PATH
 
