@@ -94,6 +94,11 @@ for file in Data/vcf_pop_names/*; do file=${file##*/}; site=${file%.txt}; vcftoo
 --vcf Data/sparrows_anna.intergenic.vcf --site-pi --out Results/02_Pi/Variants/Intergenic/$site \
 --keep Data/vcf_pop_names/$file; done
 
+# Get synonymous and nonsynonymous sites
+cat Data/sparrows_anna.syn.vcf | grep -E -v "#CHROM|start_lost|stop_gained|stop_lost|missense_variant" | cut -f 1,2 | sed -e 's/\t/:/g' > Data/synonymoussites.txt
+cat Data/sparrows_anna.nonsyn.vcf | grep -E -v "#CHROM" | cut -f 1,2 | sed -e 's/\t/:/g' > Data/nonsynonymoussites.txt
+
+
 ## Calculate intronic and intergenic regions
 python3 Bin/getexonsandinter.py Data/cass.gff Data/introns.pos Data/intergenic.pos
 
