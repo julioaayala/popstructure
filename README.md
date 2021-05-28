@@ -1,5 +1,7 @@
 # Patterns of genetic diversity across island and mainland populations of the Italian sparrow
 
+Code available at: https://github.com/julioaayala/popstructure_italiansparrow
+
 ## Getting started
 This repository has the necessary scripts to generate different measures of population structure and genetic diversity in the Italian sparrow, a hybrid species.
 
@@ -8,12 +10,12 @@ The scripts can be run either by manually installing the listed requirements on 
 ## Requirements
 - **Plink/1.90b4.9** (https://www.cog-genomics.org/plink2)
 - **Vcftools/0.1.16** (https://vcftools.github.io)
-- **Samtools//1.12** ()
+- **Samtools/1.12** (https://samtools.github.io)
 - **ANGSD/0.933** (http://www.popgen.dk/angsd/index.php/ANGSD#Overview)
 - **SnpEff/5.0e** (Downloaded and installed in step 02 from http://pcingola.github.io/SnpEff/download/, which requires Java/1-8+)
 - **Python/3.6.X**
   - Packages: Pandas/1.2.4
-- **R/4.0.X)** -> Used for data visualisation
+- **R/4.0.X** -> Used for data visualisation
   - Packages: Tidyverse/1.3.1, Cowplot/1.1.1, sf/0.9-8, rnaturalearth/0.1.0, rnaturalearthdata/0.1.0, data.table/1.14.0
 
 ## Workflow
