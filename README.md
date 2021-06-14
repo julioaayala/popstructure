@@ -1,5 +1,8 @@
 # Patterns of genetic diversity across island and mainland populations of the Italian sparrow
 
+### Julio Ayala
+### May 2021
+
 Code available at: https://github.com/julioaayala/popstructure_italiansparrow
 
 ## Getting started
