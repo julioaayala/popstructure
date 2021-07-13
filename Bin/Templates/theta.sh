@@ -11,20 +11,20 @@
 module load bioinfo-tools
 module load ANGSD
 
-cd $BASE_PATH
+cd /proj/snic2020-6-222/Projects/Pitaliae/working/Julio
 
 # chrZ
 # Prepare by position with 10 cores (-P=10)
-realSFS saf2theta Results/04_Sfs/pop/pop.chrZ.saf.idx -sfs Results/04_Sfs/pop.chrz.ml \
--P 10 -outname Results/06_Theta/pop.chrz
+realSFS saf2theta Results/02_Sfs/pop/pop.chrZ.saf.idx -sfs Results/02_Sfs/pop.chrz.ml \
+-P 10 -outname Results/04_Theta/pop.chrz
 # Calculate thetas over 100kb windows
-thetaStat do_stat Results/06_Theta/pop.chrz.thetas.idx -win 100000 -step 100000 \
--outnames Results/06_Theta/pop.chrz
+thetaStat do_stat Results/04_Theta/pop.chrz.thetas.idx -win 100000 -step 100000 \
+-outnames Results/04_Theta/pop.chrz
 
 # Autosomes
 # Prepare by position with 10 cores (-P=10)
-realSFS saf2theta Results/04_Sfs/pop/pop.autosomes.saf.idx -sfs Results/04_Sfs/pop.autosomes.ml \
--P 10 -outname Results/06_Theta/pop.autosomes
+realSFS saf2theta Results/02_Sfs/pop/pop.autosomes.saf.idx -sfs Results/02_Sfs/pop.autosomes.ml \
+-P 10 -outname Results/04_Theta/pop.autosomes
 # Calculate thetas over 100kb windows
-thetaStat do_stat Results/06_Theta/pop.autosomes.thetas.idx -win 100000 -step 100000 \
--outnames Results/06_Theta/pop.autosomes
+thetaStat do_stat Results/04_Theta/pop.autosomes.thetas.idx -win 100000 -step 100000 \
+-outnames Results/04_Theta/pop.autosomes

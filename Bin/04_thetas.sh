@@ -15,21 +15,16 @@
 # Based on SFS using ANGSD
 #----------------------------------------------------------------------------------------
 
-if [ -n "$IS_UPPMAX" ]; then
-  module load bioinfo-tools
-  module load ANGSD # ANGSD/0.933
-  module list
-else echo ""; fi
+module load bioinfo-tools
+module load ANGSD # ANGSD/0.933
+
+cd /proj/snic2020-6-222/Projects/Pitaliae/working/Julio
 
 ## Using the template, generate for all populations
-mkdir Bin/06_Theta_scripts
-for pop in $(ls -1 Data/Populations/ | sed 's/.filelist//'); \
+mkdir -p Bin/04_Theta_scripts
+for pop in $(ls -1 Data/Populations/*.filelist | sed 's/.*\///' | sed 's/.filelist//'); \
 do sed "s/pop/$pop/g" Bin/Templates/theta.sh \
-> Bin/06_Theta_scripts/$pop.sh; done
+> Bin/04_Theta_scripts/$pop.sh; done
 
 ## Execute all scripts
-for file in Bin/06_Theta_scripts/*; do chmod +x $file; ./$file; done
-
-## Calculate mean and standar deviation to obtain FST (col 9)
-for file in Results/06_Theta/*.autosomes.pestPG; do python3 Bin/meanstdev.py $file 8; done
-for file in Results/06_Theta/*.chrz.pestPG; do python3 Bin/meanstdev.py $file 8; done
+for file in Bin/04_Theta_scripts/*; do chmod +x $file; sbatch $file; done

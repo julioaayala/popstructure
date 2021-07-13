@@ -16,12 +16,10 @@
 #----------------------------------------------------------------------------------------
 
 ## Load modules
-if [ -n "$IS_UPPMAX" ]; then
-  module load bioinfo-tools
-  module load plink # plink/1.90b4.9
-  module load vcftools # vcftools/0.1.16
-  module list
-else echo ""; fi
+module load bioinfo-tools
+module load plink # plink/1.90b4.9
+module load vcftools # vcftools/0.1.16
+module list
 
 cd $BASE_PATH
 

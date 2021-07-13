@@ -11,21 +11,21 @@
 module load bioinfo-tools
 module load ANGSD
 
-cd $BASE_PATH
+cd /proj/snic2020-6-222/Projects/Pitaliae/working/Julio/
 cd Results
 
 ## Z chromosome
 #Prepare files for analysis
-realSFS fst index 04_Sfs/p1/p1.chrZ.saf.idx 04_Sfs/p2/p2.chrZ.saf.idx \
--sfs 04_Sfs/Sfs2d/p1.p2.chrZ.ml -outname 05_Fst/p1.p2.chrz
+realSFS fst index 02_Sfs/p1/p1.chrZ.saf.idx 02_Sfs/p2/p2.chrZ.saf.idx \
+-sfs 02_Sfs/Sfs2d/p1.p2.chrZ.ml -outname 05_Fst/p1.p2.chrz
 ## Calculate FST with a 100kb window
 realSFS fst stats2 05_Fst/p1.p2.chrz.fst.idx -win 100000 -step 100000 \
 > 05_Fst/p1.p2.chrz.windowed
 
 ## Autosomes
 #Prepare files for analysis
-realSFS fst index 04_Sfs/p1/p1.autosomes.saf.idx 04_Sfs/p2/p2.autosomes.saf.idx \
--sfs 04_Sfs/Sfs2d/p1.p2.autosomes.ml -outname 05_Fst/p1.p2.autosomes
+realSFS fst index 02_Sfs/p1/p1.autosomes.saf.idx 02_Sfs/p2/p2.autosomes.saf.idx \
+-sfs 02_Sfs/Sfs2d/p1.p2.autosomes.ml -outname 05_Fst/p1.p2.autosomes
 ## Calculate FST with a 100kb window
 realSFS fst stats2 05_Fst/p1.p2.autosomes.fst.idx -win 100000 -step 100000 \
 > 05_Fst/p1.p2.autosomes.windowed
