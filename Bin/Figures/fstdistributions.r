@@ -34,13 +34,14 @@ read_csv_filename <- function(filename){
   names(df) <- c("chr", "midPos", "Nsites", "FST")
   df$pos <- NULL
   df$site <- filename
-  df$site <- gsub(".chrz\\..*","",df$site)
+  df$site <- gsub(".chrZ\\..*","",df$site)
   df$site <- gsub(".autosomes\\..*","",df$site)
   df <- merge(df, pairs, by = "site")
   return(df)
 }
 
 files = list.files(pattern = "*.windowed")
+
 temp <- lapply(files, read_csv_filename)
 df <- rbindlist(temp)
 df$chrgroup = ifelse(df$chr=="chrZ", "Z chromosome", "Autosomes")
@@ -60,7 +61,8 @@ p <- ggplot(df, aes(x=pair, y = FST, color = chrgroup))+
   theme(plot.title = element_text(size = 12),
       legend.title = element_blank(), 
       legend.direction = "horizontal",
-      legend.position = "bottom")
+      legend.position = "bottom",
+      axis.text.x = element_text(size = 12))
 print(p)
 
 

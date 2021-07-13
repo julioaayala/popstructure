@@ -9,7 +9,7 @@
 rm(list = ls())
 library(tidyverse)
 library(data.table)  
-setwd("Results/03_Dxy/")
+setwd("Results/03_Dxy/Mafs")
 ## Dxy Distributions
 pairs <- data.frame(pair = c('II', 'IM', 'IM', 'IP', 'II', 'IM', 'II', 'IP', 'IM',
                              'IM', 'IP', 'II', 'IM', 'II', 'IP', 'MM', 'MP', 'IM',
@@ -29,18 +29,21 @@ pairs <- data.frame(pair = c('II', 'IM', 'IM', 'IP', 'II', 'IM', 'II', 'IP', 'IM
                              'rimini_vs_sicily', 'rimini_vs_spanish', 'sicily_vs_spanish'))
 
 read_csv_filename <- function(filename){
-  df <- read.csv(filename, sep = "\t")
+  df <- read.csv(filename, sep = "\t", fill = TRUE)
+  df <- df[-c(6)] # Remove N
   df$site <- filename
-  df$site <- gsub(".dxy\\..*","",df$site)
+  df$site <- gsub(".dxy\\.*","",df$site)
   df <- merge(df, pairs, by = "site")
   return(df)
 }
 
-files = list.files(pattern = "*.windowed")
+files = list.files(pattern = "*.dxy")
 temp <- lapply(files, read_csv_filename)
 df <- rbindlist(temp)
 
+df <- df[df$chrom != "mtDNA",]
 df$chrgroup = ifelse(df$chrom=="chrZ", "Z chromosome", "Autosomes")
+fulldf <- df
 df <- df[df$pair %in% c("II", "IM", "MM"),]
 chrz <- df[df$pair %in% c("II", "IM", "MM") & df$chrom == "chrZ",]
 autosomes <- df[df$pair %in% c("II", "IM", "MM") & df$chrom != "chrZ" & !grepl("scaffold", df$chr),]
@@ -58,8 +61,8 @@ p <- ggplot(df, aes(x=pair, y = dxy, color = chrgroup))+
   theme(plot.title = element_text(size = 12),
         legend.title = element_blank(), 
         legend.direction = "horizontal",
-        legend.position = "bottom")
+        legend.position = "bottom", axis.text.x = element_text(size = 12))+
+  xlab(element_blank())
 print(p)
-
 
 setwd("../../")

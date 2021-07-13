@@ -5,6 +5,7 @@
 # and plot a PCA of the same populations
 # Note: Set the working directory to the root of the project
 #------------------------------------------------------------
+setwd("Results/01_Pca/Angsd/")
 rm(list = ls())
 library(tidyverse)
 library(cowplot)
@@ -45,70 +46,31 @@ m <- ggplot(data = world) +
         legend.position = "none")
 
 ### PCA
-pca <- read_table2("Results/01_Pca/sparrows.eigenvec", col_names = F)
-eigenval <- scan("Results/01_Pca/sparrows.eigenval")
-names(pca)[1] <- "sample"
+pop<-read.table("all_populations.files")
 
-## Renaming Lesina and Rimini, since they are specieslit.
-pca[pca$sample %in% c("Lesina", "Rimini"),]$sample <- paste(pca[pca$sample %in% c("Lesina", "Rimini"),]$sample
-                                                            , pca[pca$sample %in% c("Lesina", "Rimini"),]$X2
-                                                            , sep = "_")
-## Remove the redundant column
-pca$X2 <- NULL
+C <- as.matrix(read.table("all_populations.cov"))
+e <- eigen(C)
 
-## Load samples and assign species and location
-speciesanish <- read_table2("Data/vcf_pop_names/spanish.txt", col_names = c("sample"))
-speciesanish$species <- "Spanish"
-speciesanish$location <- "Spanish"
-
-house <- read_table2("Data/vcf_pop_names/house.txt", col_names = c("sample"))
-house$species <- "House"
-house$location <- "House"
-
-corsica <- read_table2("Data/vcf_pop_names/corsica.txt", col_names = c("sample"))
-corsica$species <- "Italian"
-corsica$location <- "Corsica"
-
-crete <- read_table2("Data/vcf_pop_names/crete.txt", col_names = c("sample"))
-crete$species <- "Italian"
-crete$location <- "Crete"
-
-crotone <- read_table2("Data/vcf_pop_names/crotone.txt", col_names = c("sample"))
-crotone$species <- "Italian"
-crotone$location <- "Crotone"
-
-guglionesi <- read_table2("Data/vcf_pop_names/guglionesi.txt", col_names = c("sample"))
-guglionesi$species <- "Italian"
-guglionesi$location <- "Guglionesi"
-
-malta <- read_table2("Data/vcf_pop_names/malta.txt", col_names = c("sample"))
-malta$species <- "Italian"
-malta$location <- "Malta"
-
-rimini <- read_table2("Data/vcf_pop_names/rimini.txt", col_names = c("sample"))
-rimini$species <- "Italian"
-rimini$location <- "Rimini"
-
-sicily <- read_table2("Data/vcf_pop_names/sicily.txt", col_names = c("sample"))
-sicily$species <- "Italian"
-sicily$location <- "Sicily"
-
-
-samples <- rbind(speciesanish, house, corsica, crete, crotone, guglionesi, malta, rimini, sicily)
-
-pca <- merge(pca, samples, by="sample", all.x = T)
-names(pca)[2:(ncol(pca)-2)] <- paste0("PC", 1:(ncol(pca)-3))
-pve <- data.frame(PC = 1:20, pve = eigenval/sum(eigenval)*100)
+pca <- data.frame(PC1 = e$vectors[,1], PC2 = e$vectors[,2], Population = pop[,1])
+pca$Population <- gsub("Data/Bamfiles/bamfiles/", "", pca$Population)
+pca$Population <- str_to_title(gsub("/.*", "", pca$Population))
+pca$Species <- ifelse(pca$Population %in% c("Spanish", "House"), pca$Population,
+                      "Italian")
 
 ## plot pca
-p <- ggplot(pca, aes(PC1, PC2, shape = species, col = location)) +
+p <- ggplot(pca, aes(PC1, PC2, shape = Species, col = Population)) +
   geom_point(size = 2.5) +
-  xlab(paste0("PC1 (", signif(pve$pve[1], 3), "%)")) + 
-  ylab(paste0("PC2 (", signif(pve$pve[2], 3), "%)")) +
   coord_equal() +
   scale_color_brewer(palette = "Paired") +
   theme_bw() +
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank(), legend.position = "bottom")
 
-plot <- plot_grid(m, p, ncol=1, labels = c("a", "b"), rel_heights = c(0.8,1))
+leg <- get_legend(p)
+p <- p + theme(legend.position="none", axis.title.x = element_blank())
+
+pg <- plot_grid(m, p, ncol=2, labels = c("a", "b"))
+plot <- plot_grid(pg, leg, ncol = 1, rel_heights = c(1, 0.1))
 print(plot)
+
+
+setwd("../../../")

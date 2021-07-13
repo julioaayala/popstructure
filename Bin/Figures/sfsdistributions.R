@@ -11,7 +11,7 @@ library(tidyverse)
 library(data.table)  
 library(cowplot) # Used for arranging plots on a grid
 library(grid)
-setwd("Results/04_Sfs/")
+setwd("Results/02_Sfs/")
 
 ## Function to normalize values
 norm <- function(x) x/sum(x)
@@ -37,7 +37,7 @@ read_filename <- function(filename){
 }
 
 ## chr Z
-sfsfiles = list.files(pattern = "*.chrz.ml")
+sfsfiles = list.files(pattern = "*.chrZ.sfs")
 temp <- lapply(sfsfiles, read_filename) ## Read all files and create a dataframe
 dfz <- rbindlist(temp)
 dfz <- dfz[dfz$derivedalleles < 19 ,]
@@ -46,7 +46,7 @@ dfz$type <- "Z Chromosome"
 
 
 ## Autosomes
-sfsfiles = list.files(pattern = "*.autosomes.ml")
+sfsfiles = list.files(pattern = "*.autosomes.sfs")
 temp <- lapply(sfsfiles, read_filename)
 dfautosomes <- rbindlist(temp)
 dfautosomes <- dfautosomes[dfautosomes$derivedalleles < 19 ,]
@@ -83,7 +83,7 @@ z <- ggplot(dfz, aes(x = factor(derivedalleles), y = normalizedsites, fill = loc
         legend.position = "bottom") +
   guides(fill=guide_legend(nrow=1, byrow = TRUE))
 
-plotlegend <- get_legend(a)
+plotlegend <- get_legend(z)
 a <- a + theme(legend.position="none", axis.title.x = element_blank())
 z <- z + theme(legend.position="none", axis.title.x = element_blank())
 
